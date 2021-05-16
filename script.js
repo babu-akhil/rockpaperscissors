@@ -29,22 +29,69 @@ function decideWinner(playerSelection, computerSelection) {
 
 }
 
-function game() {
-    let score = 0
-    let computerscore= 0
-    for(let i=0;i<5;i++) {
-        playerMove = prompt('Enter your move')
-        let computerMove = computerPlay()
-        console.log(`Computer played ${computerMove}`)
-        let winner = decideWinner(playerMove, computerMove)
-        if (winner[1]===1) {score++}
-        console.log(winner[0])
-        if (winner[1]===0) {computerscore++;}
-        console.log(`Score is You:${score} Computer:${computerscore}`)
-    }
-    score > computerscore ? console.log('You win brother') : console.log('AI Takeover Muhahahah')
-    score == computerscore ? console.log('Lets call it even') : ""
-}
+const buttons = document.querySelectorAll('button')
+const resultscontainer = document.querySelector('.results')
 
-alert('Game is in the console brother, press Cntrl+Shift+I')
-game()
+const playagain = document.createElement('button')
+playagain.innerText = 'Play again'
+
+let playerScore = 0;
+let computerScore = 0;
+
+buttons.forEach((button) => {
+
+
+    button.addEventListener('click', () => {
+        let computermove = computerPlay();
+        let results = (decideWinner(button.id, computermove));
+        if (results[1]===1) {playerScore++};
+        if (results[1]===0) {computerScore++};
+        let resultstring = document.createElement('p')
+        resultstring.textContent = results[0]
+        resultscontainer.appendChild(resultstring)
+
+        let scorestring = document.createElement('p')
+        scorestring.textContent = `The score is You: ${playerScore}, Computer: ${computerScore}`
+        resultscontainer.append(scorestring)
+
+        if (playerScore===5) {
+            let resultstring = document.createElement('p')
+            resultstring.textContent = 'You win! Congrats. Leave or play again'
+            resultscontainer.appendChild(resultstring)
+            playerScore = 0
+            computerScore = 0
+            resultscontainer.append(playagain)
+
+        }
+        if (computerScore===5) {
+            let resultstring = document.createElement('p')
+            resultstring.textContent = 'You lose! Loser!. Leave or play again'
+            resultscontainer.appendChild(resultstring)
+            playerScore = 0
+            computerScore = 0
+            resultscontainer.append(playagain)
+        }
+    });
+});
+
+playagain.addEventListener('click',() => {
+    resultscontainer.innerHTML = ""
+})
+
+
+// function game() {
+//     let score = 0
+//     let computerscore= 0
+//     for(let i=0;i<5;i++) {
+//         playerMove = prompt('Enter your move')
+//         let computerMove = computerPlay()
+//         console.log(`Computer played ${computerMove}`)
+//         let winner = decideWinner(playerMove, computerMove)
+//         if (winner[1]===1) {score++}
+//         console.log(winner[0])
+//         if (winner[1]===0) {computerscore++;}
+//         console.log(`Score is You:${score} Computer:${computerscore}`)
+//     }
+//     score > computerscore ? console.log('You win brother') : console.log('AI Takeover Muhahahah')
+//     score == computerscore ? console.log('Lets call it even') : ""
+// }
